@@ -101,6 +101,6 @@ pixels.forEach((pixel, index) => {
   }
 });
 ```
-This doesn't just modify your pixel objects, each pixel is tied directly to your binary data. Changing a property of the pixel object actually changes the data in the array buffer. If you download the original ArrayBuffer every other pixel will be blue.
+This doesn't just modify your pixel objects, each pixel is tied directly to your binary data. Changing a property of the pixel object actually changes the data in the array buffer. If you download the original ArrayBuffer every other pixel will be blue. You can try this out [here](https://roblouie.com/structjs/bitmap-example/), or view the full code [here](https://github.com/roblouie/structjs).
 
 We can of course follow the same principle with any binary file, making reading and modifying any file easy!
