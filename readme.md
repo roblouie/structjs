@@ -101,10 +101,6 @@ pixels.forEach((pixel, index) => {
   }
 });
 ```
-This doesn't just modify your pixel objects, each pixel is tied directly to your binary data. Changing a property of the pixel object actually changes the data in the array buffer. If you create a blob from the original array buffer we read in, you can download the file and see that every other pixel is blue now!
-
-`const blob = new Blob([bitmapFileArrayBuffer], { type: "image/bitmap" });`
-
-Your generated objects are actually tied to the binary data in the file. This means that not only can you read the data, but that by modifying a property, you modify the cooresponding byte(s) in the file data.
+This doesn't just modify your pixel objects, each pixel is tied directly to your binary data. Changing a property of the pixel object actually changes the data in the array buffer. If you download the original ArrayBuffer every other pixel will be blue.
 
 We can of course follow the same principle with any binary file, making reading and modifying any file easy!
