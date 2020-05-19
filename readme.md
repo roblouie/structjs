@@ -24,7 +24,7 @@ For an example, let's write a program that reads in a bitmap image file. Using [
 | 4 bytes | Defines the offset from the start of the file to where the actual bitmap pixel image data is stored |
 
 If we open a bitmap image file into an ArrayBuffer using a FileReader, StructJS makes it easy to read this data out of the ArrayBuffer and into a nicely defined object. First we get an array buffer and define our struct based on the header structure:
-```
+```js
 import Struct from '@rlouie/structjs'
 
 const bitmapFileArrayBuffer = readBitmapImageFile();
@@ -38,7 +38,7 @@ const bitmapHeaderStruct = new Struct(
 ```
 
 We then call `getObject` on our struct to read data out of the array buffer into our object. We pass in the buffer to read from, the byte index to start from, and true for little endian.
-```
+```js
 const bitmapHeader = bitmapHeaderStruct.getObject(bitmapFileArrayBuffer, 0, true);
 
 console.log(bitmpHeader.fileSize);
@@ -46,7 +46,7 @@ console.log(bitmpHeader.fileSize);
 And that's it. This code will log the bitmap file size to the console using the data read from the file header.
 
 We can actually continue on with this and define out the rest of the file based on the documented structure.
-```
+```js
 const infoHeaderStruct = new Struct(
   Struct.Uint32('sizeOfInfoHeader'),
   Struct.Uint32('imageWidth'),
@@ -73,12 +73,12 @@ const numberOfPixels = infoHeader.imageWidth * infoHeader.imageHeight;
 After defining our structs, we generate the info header object as before, but now we want to start after the header, so we give a starting point of the byte length of the header. We also calculate how many pixels total are in the image by multiplying the width and height.
 
 Now with pixels, unlike the headers, we actually need an array of pixels, not just one. So we call `getObjects` on our struct to get an array of objects built from our struct, starting at the beginning of the bitmap data, and reading number of pixels times, in little endian format. The result will be an array the size of umberOfPixels, where each element of the array is an object defined by our struct.
-```
+```js
 const pixels = pixelDataStruct.getObjects(bitmapFile, header.bitmapDataStart, numberOfPixels, true);
 ```
 And believe it or not, that's it! We just read in an entire bitmap image file exactly to spec. We can draw the image into a canvas now if we want to with just a little extra code.
 
-```
+```js
 const imageData = new ImageData(infoHeader.imageWidth, infoHeader.imageHeight);
 
 pixels.forEach((pixel, index) => {
@@ -92,7 +92,7 @@ pixels.forEach((pixel, index) => {
 canvasContext.putImageData(imageData, 0, 0);
 ```
 Great! We read in a bitmap image file and drew it to the canvas. But that's not all, the properties of the generated objects are **not** read only, **you can modify the file by modifying the properties**. For instance we can turn every other pixel in the bitmap image file blue by modifying the pixels.
-```
+```js
 pixels.forEach((pixel, index) => {
   if (index % 2 === 0) {
     pixel.red = 0;
