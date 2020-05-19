@@ -1,0 +1,27 @@
+<head>
+  <script type="module" src="./open-bitmap.js"></script>
+</head>
+<body>
+  <h2>Bitmap Image Parser</h2>
+  <p>
+    This example uses the <a href="https://www.npmjs.com/package/@rlouie/structjs">@rlouie/structjs</a> package to create a bitmap image file parser.
+    Using the file information provided <a href="http://www.ece.ualberta.ca/~elliott/ee552/studentAppNotes/2003_w/misc/bmp_file_format/bmp_file_format.htm">here</a>
+    about the file format we declare structs for the header, the info header, and the pixel data. We then use our defined structs to read data out of the array buffer
+    into an object or array of objects with our struct type.
+  </p>
+  <p>
+    We use our created file header objects to display some info about the file in plain text, and then loop through the pixels and draw them into an ImageData object
+    which is then drawn onto a canvas. Bitmaps store their imagages starting from the bottom, so the image will be drawn upside down. For simplicity of the example, only 24-bit bitmaps are drawn, and we simply have a 500x500 pixel canvas, larger images will
+    be partially cut off.
+  </p>
+  <input type="file" id="file-input" accept=".bmp">
+  <button id="turn-blue">
+    Turn every other pixel blue and download
+  </button>
+
+  <div id="image-size"></div>
+  <div id="bits-per-pixel"></div>
+  <div id="total-pixel-count"></div>
+
+  <canvas width="500" height="500"></canvas>
+</body>
