@@ -91,7 +91,7 @@ pixels.forEach((pixel, index) => {
 
 canvasContext.putImageData(imageData, 0, 0);
 ```
-Great! We read in a bitmap image file and drew it to the canvas. But that's not all, the properties of the generated objects are **not** read only, you can modify the file by modifying the properties. For instance we can turn every other pixel in the bitmap image file blue by modifying the pixels.
+Great! We read in a bitmap image file and drew it to the canvas. But that's not all, the properties of the generated objects are **not** read only, **you can modify the file by modifying the properties**. For instance we can turn every other pixel in the bitmap image file blue by modifying the pixels.
 ```
 pixels.forEach((pixel, index) => {
   if (index % 2 === 0) {
