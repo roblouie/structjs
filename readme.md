@@ -138,25 +138,44 @@ I've omitted redefining the Structs here, see the front-end section for that, or
 
 ## API
 
+- [Static](#static)
+  - [Struct(propertyInfo1, ...propertyInfoN)](https://github.com/roblouie/structjs#structpropertyinfo1-propertyinfon)
+  - [Struct.Int8(propertyName)](https://github.com/roblouie/structjs#structint8propertyname)
+  - [Struct.Uint8(propertyName)](https://github.com/roblouie/structjs#structuint8propertyname)
+  - [Struct.Int16(propertyName)](https://github.com/roblouie/structjs#structint16propertyname)
+  - [Struct.Uint16(propertyName)](https://github.com/roblouie/structjs#structuint16propertyname)
+  - [Struct.Int32(propertyName)](https://github.com/roblouie/structjs#structint32propertyname)
+  - [Struct.Uint32(propertyName)](https://github.com/roblouie/structjs#structuint32propertyname)
+  - [Struct.BigInt64(propertyName)](https://github.com/roblouie/structjs#structbigint64propertyname)
+  - [Struct.BigUint64(propertyName)](https://github.com/roblouie/structjs#structbiguint64propertyname)
+  - [Struct.Float32(propertyName)](https://github.com/roblouie/structjs#structfloat32propertyname)
+  - [Struct.Float64(propertyName)](https://github.com/roblouie/structjs#structfloat64propertyname)
+
 ### Static
 
-#### Struct(propertyInfo1, ...propertyInfoN)
+---
+
+### Struct(propertyInfo1, ...propertyInfoN)
 Creates a new Struct.
-#####  Parameters
+####  Parameters
 `propertyInfo1, propertyInfo2, propertyInfoN`
 
 One or more property definitions for your struct.
-##### Returns
+#### Returns
 A Struct instance based on the definitions provided.
 
-#### Struct.Int8(propertyName)
+---
+
+### Struct.Int8(propertyName)
 Defines 8-bit signed integer.
-#####  Parameters
+####  Parameters
 `propertyName`
 
 What you want the property to be named in the resulting object.
 #### Returns
 A property info object with the format `{ propertyName, propertyType: 'Int8', byteLength: 1 }` used by the `Struct` constructor.
+
+---
 
 ### Struct.Uint8(propertyName)
 Defines 8-bit unsigned integer.
@@ -167,6 +186,8 @@ What you want the property to be named in the resulting object.
 #### Returns
 A property info object with the format `{ propertyName, propertyType: 'Uint8', byteLength: 1 }` used by the `Struct` constructor.
 
+---
+
 ### Struct.Int16(propertyName)
 Defines 16-bit signed integer.
 ####  Parameters
@@ -175,6 +196,8 @@ Defines 16-bit signed integer.
 What you want the property to be named in the resulting object.
 #### Returns
 A property info object with the format `{ propertyName, propertyType: 'Int16', byteLength: 2 }` used by the `Struct` constructor.
+
+---
 
 ### Struct.Uint16(propertyName)
 Defines 16-bit unsigned integer.
@@ -185,6 +208,8 @@ What you want the property to be named in the resulting object.
 #### Returns
 A property info object with the format `{ propertyName, propertyType: 'Uint16', byteLength: 2 }` used by the `Struct` constructor.
 
+---
+
 ### Struct.Int32(propertyName)
 Defines 32-bit signed integer.
 ####  Parameters
@@ -193,6 +218,8 @@ Defines 32-bit signed integer.
 What you want the property to be named in the resulting object.
 #### Returns
 A property info object with the format `{ propertyName, propertyType: 'Int32', byteLength: 4 }` used by the `Struct` constructor.
+
+---
 
 ### Struct.Uint32(propertyName)
 Defines 32-bit unsigned integer.
@@ -203,6 +230,8 @@ What you want the property to be named in the resulting object.
 #### Returns
 A property info object with the format `{ propertyName, propertyType: 'Uint32', byteLength: 4 }` used by the `Struct` constructor.
 
+---
+
 ### Struct.BigInt64(propertyName)
 Defines 64-bit signed big int.
 ####  Parameters
@@ -211,6 +240,8 @@ Defines 64-bit signed big int.
 What you want the property to be named in the resulting object.
 #### Returns
 A property info object with the format `{ propertyName, propertyType: 'BigInt64', byteLength: 8 }` used by the `Struct` constructor.
+
+---
 
 ### Struct.BigUint64(propertyName)
 Defines 64-bit unsigned big int.
@@ -221,6 +252,8 @@ What you want the property to be named in the resulting object.
 #### Returns
 A property info object with the format `{ propertyName, propertyType: 'BigUint64', byteLength: 8 }` used by the `Struct` constructor.
 
+---
+
 ### Struct.Float32(propertyName)
 Defines 32-bit floating point number.
 ####  Parameters
@@ -229,6 +262,8 @@ Defines 32-bit floating point number.
 What you want the property to be named in the resulting object.
 #### Returns
 A property info object with the format `{ propertyName, propertyType: 'Float32', byteLength: 4 }` used by the `Struct` constructor.
+
+---
 
 ### Struct.Float64(propertyName)
 Defines 64-bit floating point number.
