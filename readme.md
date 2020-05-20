@@ -107,10 +107,12 @@ This doesn't just modify your pixel objects, each pixel is tied directly to your
 
 StructJS can be used in node just as on the front-end, just use require instead of import:
 
-`const Struct = require('@rlouie/structjs');`
+```js
+const Struct = require('@rlouie/structjs');
+```
 
 And use the `.buffer` property of the `Buffer` object returned by `fs.readfile`:
-```
+```js
 fs.readFile(path.join(__dirname, 'cartest.bmp'), (err, data) => {
   const header = headerStruct.getObject(data.buffer, 0, true);
   const infoHeader = infoHeaderStruct.getObject(data.buffer, header.byteLength, true);
