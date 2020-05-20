@@ -1,8 +1,8 @@
 # StructJS
 
-StructJS aims to create a C-like struct type to make working with binary files easier. It also tries to be as simple as possible and make good use existing file access features of JavaScript like [DataView](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView).
-
 Struct makes it easy to both read and modify ANY file of ANY type, provided you know how that file is **struct**ured.
+
+StructJS provides a C style struct type to make reading and editing binary files easier. It's also small (6kb minified) and has no external dependencies.
 
 ## Installation
 
@@ -101,6 +101,138 @@ pixels.forEach((pixel, index) => {
   }
 });
 ```
-This doesn't just modify your pixel objects, each pixel is tied directly to your binary data. Changing a property of the pixel object actually changes the data in the array buffer. If you download the original ArrayBuffer every other pixel will be blue. You can try this out [here](https://roblouie.com/structjs/bitmap-example/), or view the full code [here](https://github.com/roblouie/structjs).
+This doesn't just modify your pixel objects, each pixel is tied directly to your binary data. Changing a property of the pixel object actually changes the data in the array buffer. If you download the original ArrayBuffer every other pixel will be blue. You can try this out [here](https://roblouie.com/structjs/bitmap-example/), or view the full code [here](https://github.com/roblouie/structjs/front-end).
 
-We can of course follow the same principle with any binary file, making reading and modifying any file easy!
+### Usage in Node
+
+StructJS can be used in node just as on the front-end, just use require instead of import:
+
+`const Struct = require('@rlouie/structjs');`
+
+And use the `.buffer` property of the `Buffer` object returned by `fs.readfile`:
+```
+fs.readFile(path.join(__dirname, 'cartest.bmp'), (err, data) => {
+  const header = headerStruct.getObject(data.buffer, 0, true);
+  const infoHeader = infoHeaderStruct.getObject(data.buffer, header.byteLength, true);
+  const numberOfPixels = infoHeader.imageWidth * infoHeader.imageHeight;
+  const pixels = pixelDataStruct.getObjects(data.buffer, header.bitmapDataStart, numberOfPixels, true);
+
+  console.log(`Image Size: ${infoHeader.imageWidth} x ${infoHeader.imageHeight}`);
+  console.log(`Bits Per Pixel: ${infoHeader.bitsPerPixel}`);
+  console.log(`Image size in bytes (width * height * bytes per pixel): ${infoHeader.bitmapDataSize}`);
+
+  pixels.forEach((pixel, index) => {
+    if (index % 2 === 0) {
+      pixel.red = 0;
+      pixel.green = 0;
+      pixel.blue = 255;
+    }
+  });
+
+  fs.writeFile(path.join(__dirname, 'blue-pixels.bmp'), data, () => console.log('File written'));
+});
+```
+I've omitted redefining the Structs here, see the front-end section for that, or the full example code [here](https://github.com/roblouie/structjs/examples/node/open-bitmap.js).
+
+## API
+
+### Static
+
+#### Struct(propertyInfo1, ...propertyInfoN)
+Creates a new Struct.
+#####  Parameters
+`propertyInfo1, propertyInfo2, propertyInfoN`
+
+One or more property definitions for your struct.
+##### Returns
+A Struct instance based on the definitions provided.
+
+#### Struct.Int8(propertyName)
+Defines 8-bit signed integer.
+#####  Parameters
+`propertyName`
+
+What you want the property to be named in the resulting object.
+#### Returns
+A property info object with the format `{ propertyName, propertyType: 'Int8', byteLength: 1 }` used by the `Struct` constructor.
+
+### Struct.Uint8(propertyName)
+Defines 8-bit unsigned integer.
+####  Parameters
+`propertyName`
+
+What you want the property to be named in the resulting object.
+#### Returns
+A property info object with the format `{ propertyName, propertyType: 'Uint8', byteLength: 1 }` used by the `Struct` constructor.
+
+### Struct.Int16(propertyName)
+Defines 16-bit signed integer.
+####  Parameters
+`propertyName`
+
+What you want the property to be named in the resulting object.
+#### Returns
+A property info object with the format `{ propertyName, propertyType: 'Int16', byteLength: 2 }` used by the `Struct` constructor.
+
+### Struct.Uint16(propertyName)
+Defines 16-bit unsigned integer.
+####  Parameters
+`propertyName`
+
+What you want the property to be named in the resulting object.
+#### Returns
+A property info object with the format `{ propertyName, propertyType: 'Uint16', byteLength: 2 }` used by the `Struct` constructor.
+
+### Struct.Int32(propertyName)
+Defines 32-bit signed integer.
+####  Parameters
+`propertyName`
+
+What you want the property to be named in the resulting object.
+#### Returns
+A property info object with the format `{ propertyName, propertyType: 'Int32', byteLength: 4 }` used by the `Struct` constructor.
+
+### Struct.Uint32(propertyName)
+Defines 32-bit unsigned integer.
+####  Parameters
+`propertyName`
+
+What you want the property to be named in the resulting object.
+#### Returns
+A property info object with the format `{ propertyName, propertyType: 'Uint32', byteLength: 4 }` used by the `Struct` constructor.
+
+### Struct.BigInt64(propertyName)
+Defines 64-bit signed big int.
+####  Parameters
+`propertyName`
+
+What you want the property to be named in the resulting object.
+#### Returns
+A property info object with the format `{ propertyName, propertyType: 'BigInt64', byteLength: 8 }` used by the `Struct` constructor.
+
+### Struct.BigUint64(propertyName)
+Defines 64-bit unsigned big int.
+####  Parameters
+`propertyName`
+
+What you want the property to be named in the resulting object.
+#### Returns
+A property info object with the format `{ propertyName, propertyType: 'BigUint64', byteLength: 8 }` used by the `Struct` constructor.
+
+### Struct.Float32(propertyName)
+Defines 32-bit floating point number.
+####  Parameters
+`propertyName`
+
+What you want the property to be named in the resulting object.
+#### Returns
+A property info object with the format `{ propertyName, propertyType: 'Float32', byteLength: 4 }` used by the `Struct` constructor.
+
+### Struct.Float64(propertyName)
+Defines 64-bit floating point number.
+####  Parameters
+`propertyName`
+
+What you want the property to be named in the resulting object.
+#### Returns
+A property info object with the format `{ propertyName, propertyType: 'Float64', byteLength: 8 }` used by the `Struct` constructor.
