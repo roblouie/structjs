@@ -4,9 +4,9 @@
   "description": "This package acts as a wrapper to the built-in DataView object while also keeping track of file offsets, allowing for a struct style way of accessing file data.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build": "babel src/struct.js --out-file index.js",
-    "test": "jest"
+    "build-min": "babel src/struct.js --presets minify --out-file struct.min.js"
   },
   "keywords": [
     "binary",
@@ -15,13 +15,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/roblouie/js-struct.git"
+    "url": "git+https://github.com/roblouie/structjs"
   },
-  "homepage": "https://github.com/roblouie/js-struct#readme",
+  "homepage": "https://github.com/roblouie/structjs#readme",
   "author": "Rob Louie",
   "license": "ISC",
   "files": [
-    "package.json",
     "index.js"
   ],
   "devDependencies": {
@@ -29,6 +28,8 @@
     "@babel/core": "^7.9.6",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/preset-env": "^7.9.6",
+    "babel-plugin-add-module-exports": "^1.0.2",
+    "babel-preset-minify": "^0.5.1",
     "jest": "^26.0.1"
   }
 }

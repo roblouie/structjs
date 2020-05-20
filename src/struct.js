@@ -1,4 +1,4 @@
-export class Struct {
+export default class Struct {
   static Types = {
     Int8: 'Int8',
     Uint8: 'Uint8',

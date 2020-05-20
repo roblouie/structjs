@@ -1,4 +1,4 @@
-import { Struct } from '../../src/struct.js';
+import Struct from '../../src/struct.js';
 
 let pixels;
 let bitmapFileArrayBuffer ;

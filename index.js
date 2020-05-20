@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Struct = void 0;
+exports["default"] = void 0;
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -265,7 +265,7 @@ var Struct = /*#__PURE__*/function () {
   return Struct;
 }();
 
-exports.Struct = Struct;
+exports["default"] = Struct;
 
 _defineProperty(Struct, "Types", {
   Int8: 'Int8',
@@ -279,3 +279,5 @@ _defineProperty(Struct, "Types", {
   Float32: 'Float32',
   Float64: 'Float64'
 });
+
+module.exports = exports.default;
