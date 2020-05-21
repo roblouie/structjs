@@ -1,4 +1,4 @@
-import Struct from "./struct";
+import Struct from "../index";
 
 let dataView;
 
@@ -266,12 +266,12 @@ describe('64 bit float', () => {
     expect(dataView.getFloat64(8, true).toFixed(1)).toBe('2.2');
   });
 
-  test('64 bit float create a 4 byte offset to the next value', () => {
+  test('64 bit float create a 8 byte offset to the next value', () => {
     const octBytes = sixtyFourBitStruct.createObject(arrayBuffer, 0, true);
     expect(octBytes.offsetTo.secondValue).toBe(8);
   });
 
-  test('Each 64 bit float adds 4 bytes to the structs total byteLength', () => {
+  test('Each 64 bit float adds 8 bytes to the structs total byteLength', () => {
     const octBytes = sixtyFourBitStruct.createObject(arrayBuffer, 0, true);
     expect(octBytes.byteLength).toBe(16);
     expect(sixtyFourBitStruct.byteLength).toBe(16);

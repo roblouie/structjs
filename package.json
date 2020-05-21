@@ -1,6 +1,6 @@
 {
   "name": "@rlouie/structjs",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "This package acts as a wrapper to the built-in DataView object while also keeping track of file offsets, allowing for a struct style way of accessing file data.",
   "main": "index.js",
   "scripts": {
@@ -15,7 +15,11 @@
     "struct"
   ],
   "jest": {
-    "coverageReporters": ["json-summary", "lcov", "text"]
+    "coverageReporters": [
+      "json-summary",
+      "lcov",
+      "text"
+    ]
   },
   "repository": {
     "type": "git",

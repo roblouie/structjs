@@ -17,33 +17,35 @@ var Struct = /*#__PURE__*/function () {
   function Struct() {
     _classCallCheck(this, Struct);
 
-    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
+    for (var _len = arguments.length, propertyInfos = new Array(_len), _key = 0; _key < _len; _key++) {
+      propertyInfos[_key] = arguments[_key];
     }
 
-    this.properties = args;
-    this.byteLength = args.map(function (arg) {
-      return arg.byteLength;
+    this.properties = propertyInfos;
+    this.byteLength = propertyInfos.map(function (propertyInfo) {
+      return propertyInfo.byteLength;
     }).reduce(function (accumulator, current) {
       return accumulator + current;
     });
+    this.getObject = this.createObject;
+    this.getObjects = this.createArray;
   }
 
   _createClass(Struct, [{
-    key: "getObjects",
-    value: function getObjects(arrayBuffer, startOffset, numberOfObjects, isLittleEndian) {
+    key: "createArray",
+    value: function createArray(arrayBuffer, startOffset, numberOfObjects, isLittleEndian) {
       var endPosition = startOffset + numberOfObjects * this.byteLength;
       var objects = [];
 
       for (var i = startOffset; i < endPosition; i += this.byteLength) {
-        objects.push(this.getObject(arrayBuffer, i, isLittleEndian));
+        objects.push(this.createObject(arrayBuffer, i, isLittleEndian));
       }
 
       return objects;
     }
   }, {
-    key: "getObject",
-    value: function getObject(arrayBuffer, startOffset, isLittleEndian) {
+    key: "createObject",
+    value: function createObject(arrayBuffer, startOffset, isLittleEndian) {
       var createdObject = {
         offsetTo: {}
       };
