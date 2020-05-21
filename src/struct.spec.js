@@ -2,11 +2,6 @@ import Struct from "./struct";
 
 let dataView;
 
-// beforeEach(() => {
-//   dataView.setFloat32(30, 5.67, true);
-//   dataView.setFloat64(34, 8.90, true);
-// });
-
 describe('8 bit integers', () => {
   let arrayBuffer;
   let eightBitStruct;
@@ -188,5 +183,151 @@ describe('64 bit big integers', () => {
     const octBytes = sixtyFourBitStruct.getObject(arrayBuffer, 0, true);
     expect(octBytes.byteLength).toBe(16);
     expect(sixtyFourBitStruct.byteLength).toBe(16);
+  });
+});
+
+describe('32 bit float', () => {
+  let arrayBuffer;
+  let thirtyTwoBitStruct;
+
+  beforeEach(() => {
+    arrayBuffer = new ArrayBuffer(42);
+    dataView = new DataView(arrayBuffer);
+    dataView.setFloat32(0, 123.45, true);
+    dataView.setFloat32(4, 678.90, true);
+  });
+
+  beforeAll(() => {
+    thirtyTwoBitStruct = new Struct(
+      Struct.Float32('firstValue'),
+      Struct.Float32('secondValue'),
+    );
+  });
+
+  test('32 bit floats can be read', () => {
+    const quadBytes = thirtyTwoBitStruct.getObject(arrayBuffer, 0, true);
+    expect(quadBytes.firstValue.toFixed(2)).toBe('123.45');
+    expect(quadBytes.secondValue.toFixed(2)).toBe('678.90');
+  });
+
+  test('32 bit floats can be written', () => {
+    const quadBytes = thirtyTwoBitStruct.getObject(arrayBuffer, 0, true);
+    quadBytes.firstValue = 1.1;
+    quadBytes.secondValue = 2.2;
+    expect(quadBytes.firstValue.toFixed(1)).toBe('1.1');
+    expect(quadBytes.secondValue.toFixed(1)).toBe('2.2');
+    expect(dataView.getFloat32(0, true).toFixed(1)).toBe('1.1');
+    expect(dataView.getFloat32(4, true).toFixed(1)).toBe('2.2');
+  });
+
+  test('32 bit float create a 4 byte offset to the next value', () => {
+    const quadBytes = thirtyTwoBitStruct.getObject(arrayBuffer, 0, true);
+    expect(quadBytes.offsetTo.secondValue).toBe(4);
+  });
+
+  test('Each 32 bit float adds 4 bytes to the structs total byteLength', () => {
+    const quadBytes = thirtyTwoBitStruct.getObject(arrayBuffer, 0, true);
+    expect(quadBytes.byteLength).toBe(8);
+    expect(thirtyTwoBitStruct.byteLength).toBe(8);
+  });
+});
+
+describe('64 bit float', () => {
+  let arrayBuffer;
+  let sixtyFourBitStruct;
+
+  beforeEach(() => {
+    arrayBuffer = new ArrayBuffer(42);
+    dataView = new DataView(arrayBuffer);
+    dataView.setFloat64(0, 123.45, true);
+    dataView.setFloat64(8, 678.90, true);
+  });
+
+  beforeAll(() => {
+    sixtyFourBitStruct = new Struct(
+      Struct.Float64('firstValue'),
+      Struct.Float64('secondValue'),
+    );
+  });
+
+  test('64 bit floats can be read', () => {
+    const octBytes = sixtyFourBitStruct.createObject(arrayBuffer, 0, true);
+    expect(octBytes.firstValue).toBe(123.45);
+    expect(octBytes.secondValue).toBe(678.90);
+  });
+
+  test('64 bit floats can be written', () => {
+    const octBytes = sixtyFourBitStruct.createObject(arrayBuffer, 0, true);
+    octBytes.firstValue = 1.1;
+    octBytes.secondValue = 2.2;
+    expect(octBytes.firstValue).toBe(1.1);
+    expect(octBytes.secondValue).toBe(2.2);
+    expect(dataView.getFloat64(0, true).toFixed(1)).toBe('1.1');
+    expect(dataView.getFloat64(8, true).toFixed(1)).toBe('2.2');
+  });
+
+  test('64 bit float create a 4 byte offset to the next value', () => {
+    const octBytes = sixtyFourBitStruct.createObject(arrayBuffer, 0, true);
+    expect(octBytes.offsetTo.secondValue).toBe(8);
+  });
+
+  test('Each 64 bit float adds 4 bytes to the structs total byteLength', () => {
+    const octBytes = sixtyFourBitStruct.createObject(arrayBuffer, 0, true);
+    expect(octBytes.byteLength).toBe(16);
+    expect(sixtyFourBitStruct.byteLength).toBe(16);
+  });
+});
+
+
+describe('Create an array of objects', () => {
+  let arrayBuffer;
+  let repeatingObjectStruct;
+
+  beforeEach(() => {
+    arrayBuffer = new ArrayBuffer(14);
+    dataView = new DataView(arrayBuffer);
+    dataView.setUint8(0, 1);
+    dataView.setUint16(1, 2);
+    dataView.setUint32(3, 3);
+    dataView.setUint8(7, 4);
+    dataView.setUint16(8, 5);
+    dataView.setUint32(10, 6);
+  });
+
+  beforeAll(() => {
+    repeatingObjectStruct = new Struct(
+      Struct.Uint8('firstValue'),
+      Struct.Uint16('secondValue'),
+      Struct.Uint32('thirdValue'),
+    );
+  });
+
+  test('Each element in the array of objects is populated based on the struct definition and ArrayBuffer values', () => {
+    const myValues = repeatingObjectStruct.createArray(arrayBuffer, 0, 2);
+    expect(myValues[0].firstValue).toBe(1);
+    expect(myValues[0].secondValue).toBe(2);
+    expect(myValues[0].thirdValue).toBe(3);
+    expect(myValues[1].firstValue).toBe(4);
+    expect(myValues[1].secondValue).toBe(5);
+    expect(myValues[1].thirdValue).toBe(6);
+  });
+
+  test("The array length times the struct's byteLength results in the total size in bytes of the data read", () => {
+    const myValues = repeatingObjectStruct.createArray(arrayBuffer, 0, 2);
+    expect(myValues.length * repeatingObjectStruct.byteLength).toBe(arrayBuffer.byteLength);
+  });
+
+  test('Modifying an element in the array modifies the array buffer', () => {
+    const myValues = repeatingObjectStruct.createArray(arrayBuffer, 0, 2);
+    expect(myValues[0].firstValue).toBe(1);
+    expect(myValues[1].secondValue).toBe(5);
+
+    myValues[0].firstValue = 10;
+    myValues[1].secondValue = 20;
+
+    expect(myValues[0].firstValue).toBe(10);
+    expect(myValues[1].secondValue).toBe(20);
+    expect(dataView.getUint8(0)).toBe(10);
+    expect(dataView.getUint16(8)).toBe(20);
   });
 });
