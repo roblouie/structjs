@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1590020499582" clover="3.2.0">
-  <project timestamp="1590020499582" name="All files">
+<coverage generated="1590021825478" clover="3.2.0">
+  <project timestamp="1590021825478" name="All files">
     <metrics statements="68" coveredstatements="53" conditionals="10" coveredconditionals="8" methods="36" coveredmethods="29" elements="114" coveredelements="90" complexity="0" loc="68" ncloc="68" packages="1" files="1" classes="1"/>
     <file name="struct.js" path="D:\Projects\js-struct\src\struct.js">
       <metrics statements="68" coveredstatements="53" conditionals="10" coveredconditionals="8" methods="36" coveredmethods="29"/>

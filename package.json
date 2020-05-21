@@ -4,7 +4,8 @@
   "description": "This package acts as a wrapper to the built-in DataView object while also keeping track of file offsets, allowing for a struct style way of accessing file data.",
   "main": "index.js",
   "scripts": {
-    "test": "jest --collect-coverage",
+    "test": "jest",
+    "test-with-coverage": "jest  --coverage",
     "build": "babel src/struct.js --out-file index.js",
     "build-min": "babel src/struct.js --presets minify --out-file struct.min.js"
   },
@@ -13,6 +14,9 @@
     "file",
     "struct"
   ],
+  "jest": {
+    "coverageReporters": ["json-summary", "lcov", "text"]
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/roblouie/structjs"
