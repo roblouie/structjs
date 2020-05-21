@@ -1,6 +1,6 @@
 {
   "name": "@rlouie/structjs",
-  "version": "0.1.1",
+  "version": "0.2.4",
   "description": "This package acts as a wrapper to the built-in DataView object while also keeping track of file offsets, allowing for a struct style way of accessing file data.",
   "main": "index.js",
   "scripts": {
@@ -25,8 +25,10 @@
   "author": "Rob Louie",
   "license": "ISC",
   "files": [
-    "index.js"
+    "index.js",
+    "index.d.ts"
   ],
+  "types": "index.d.ts",
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.6",

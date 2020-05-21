@@ -1,4 +1,3 @@
-/** Class for creating structure definitions and generating objects and arrays with their defined structure from ArrayBuffers. */
 export default class Struct {
   static Types = {
     Int8: 'Int8',
@@ -13,16 +12,6 @@ export default class Struct {
     Float64: 'Float64',
   }
 
-  /**
-   * Creates a struct definition from one or more property info objects. These objects can be generated for you using the static type methods.
-   * @param {...Object} propertyInfo - An object that defines the property name, type, and size.
-   * @example
-   * const pixelStruct = new Struct(
-   *   Struct.Uint8('red'),
-   *   Struct.Uint8('green'),
-   *   Struct.Uint8('blue'),  
-   * );
-   */
   constructor(...propertyInfos) {
     this.properties = propertyInfos;
     this.byteLength = propertyInfos.map(propertyInfo => propertyInfo.byteLength).reduce((accumulator, current) => accumulator + current);
@@ -30,14 +19,6 @@ export default class Struct {
     this.getObjects = this.createArray;
   }
 
-  /**
-   * Creates an array of objects from an ArrayBuffer as defined by your struct.
-   * @param {ArrayBuffer} arrayBuffer - Array buffer to create the array from.
-   * @param {number} startOffset - Position in the ArrayBuffer to start from.
-   * @param {number} numberOfObjects - Number of objects to create.
-   * @param {boolean} [isLittleEndian] - Pass true to use little endian format. Defaults to big endian.
-   * @returns {Array} Array of objects with properties defined in struct, plus a byteLength property that defines the total byte lenght of the object.
-   */
   createArray(arrayBuffer, startOffset, numberOfObjects, isLittleEndian) {
     const endPosition = startOffset + numberOfObjects * this.byteLength;
 
@@ -50,13 +31,6 @@ export default class Struct {
     return objects;
   }
 
-  /**
-   * Creates an object from an ArrayBuffer as defined by your struct.
-   * @param {ArrayBuffer} arrayBuffer - Array buffer to create the object from.
-   * @param {number} startOffset - Position in the ArrayBuffer to start from.
-   * @param {boolean} [isLittleEndian] - Pass true to use little endian format. Defaults to big endian.
-   * @returns {Object} Object with properties defined in struct, plus a byteLength property that defines the total byte lenght of the object.
-   */
   createObject(arrayBuffer, startOffset, isLittleEndian) {
     const createdObject = {
       offsetTo: {}
@@ -150,11 +124,6 @@ export default class Struct {
     return createdObject;
   }
 
-  /**
-  * Defines an 8-bit integer. Used for struct definition.
-  * @param {string} propertyName - Property name.
-  * @returns {Object} Property info object containing the property name, type and length in bytes.
-  */
   static Int8(propertyName) {
     return {
       propertyName,
@@ -163,11 +132,6 @@ export default class Struct {
     }
   }
 
-  /**
-  * Defines an 8-bit unsigned integer. Used for struct definition.
-  * @param {string} propertyName - Property name.
-  * @returns {Object} Property info object containing the property name, type and length in bytes.
-  */
   static Uint8(propertyName) {
     return {
       propertyName,
@@ -176,11 +140,6 @@ export default class Struct {
     }
   }
 
-  /**
-  * Defines a 16-bit integer. Used for struct definition.
-  * @param {string} propertyName - Property name.
-  * @returns {Object} Property info object containing the property name, type and length in bytes.
-  */
   static Int16(propertyName) {
     return {
       propertyName,
@@ -189,11 +148,6 @@ export default class Struct {
     }
   }
 
-  /**
-  * Defines a 16-bit unsigned integer. Used for struct definition.
-  * @param {string} propertyName - Property name.
-  * @returns {Object} Property info object containing the property name, type and length in bytes.
-  */
   static Uint16(propertyName) {
     return {
       propertyName,
@@ -202,11 +156,6 @@ export default class Struct {
     }
   }
 
-  /**
-  * Defines a 32-bit integer. Used for struct definition.
-  * @param {string} propertyName - Property name.
-  * @returns {Object} Property info object containing the property name, type and length in bytes.
-  */
   static Int32(propertyName) {
     return {
       propertyName,
@@ -215,11 +164,6 @@ export default class Struct {
     }
   }
 
-  /**
-  * Defines a 32-bit unsigned integer. Used for struct definition.
-  * @param {string} propertyName - Property name.
-  * @returns {Object} Property info object containing the property name, type and length in bytes.
-  */
   static Uint32(propertyName) {
     return {
       propertyName,
@@ -228,11 +172,6 @@ export default class Struct {
     }
   }
 
-  /**
-  * Defines a 64-bit big integer. Used for struct definition.
-  * @param {string} propertyName - Property name.
-  * @returns {Object} Property info object containing the property name, type and length in bytes.
-  */
   static BigInt64(propertyName) {
     return {
       propertyName,
@@ -241,11 +180,6 @@ export default class Struct {
     }
   }
 
-  /**
-  * Defines a 64-bit unsigned big integer. Used for struct definition.
-  * @param {string} propertyName - Property name.
-  * @returns {Object} Property info object containing the property name, type and length in bytes.
-  */
   static BigUint64(propertyName) {
     return {
       propertyName,
@@ -254,11 +188,6 @@ export default class Struct {
     }
   }
 
-  /**
-  * Defines a 32-bit float. Used for struct definition.
-  * @param {string} propertyName - Property name.
-  * @returns {Object} Property info object containing the property name, type and length in bytes.
-  */
   static Float32(propertyName) {
     return {
       propertyName,
@@ -267,11 +196,6 @@ export default class Struct {
     }
   }
 
-  /**
-  * Defines a 64-bit float. Used for struct definition.
-  * @param {string} propertyName - Property name.
-  * @returns {Object} Property info object containing the property name, type and length in bytes.
-  */
   static Float64(propertyName) {
     return {
       propertyName,
