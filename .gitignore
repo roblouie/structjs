@@ -1,3 +1,4 @@
 node_modules/
-
+coverage/*
+!coverage/coverage-summary.json
 package-lock.json
