@@ -1,0 +1,5 @@
+{
+  "reporter": ["lcov"],
+  "silent": true,
+  "clean": false,
+}
