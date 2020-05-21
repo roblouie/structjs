@@ -4,7 +4,7 @@
 
 Struct makes it easy to both read and modify ANY file of ANY type, provided you know how that file is **struct**ured.
 
-StructJS provides a C style struct interface making reading and editing binary files simple and more self-documenting. StructJS is built with simplicity in mind and uses built-in JavaScript features to work, which means its **tiny** and has **zero dependencies**.
+StructJS provides a C style struct interface making reading and editing binary files simple and more self-documenting. StructJS is built with simplicity in mind, is **tiny**, and has **zero dependencies**.
 
 ## Installation
 
