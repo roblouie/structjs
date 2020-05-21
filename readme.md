@@ -1,8 +1,10 @@
 # StructJS
+![Code Coverage](https://img.shields.io/endpoint?style=flat-square&url=https%3A%2F%2Ftest-coverage-badge-smi3nzhw5v75.runkit.sh%3Fstop1%3Dcache)
+![Minzipped Size](https://img.shields.io/bundlephobia/minzip/@rlouie/structjs?style=flat-square)
 
 Struct makes it easy to both read and modify ANY file of ANY type, provided you know how that file is **struct**ured.
 
-StructJS provides a C style struct type making reading and editing binary files easier. It's also small (6kb minified) and has no external dependencies.
+StructJS provides a C style struct interface making reading and editing binary files simple and more self-documenting. StructJS is built with simplicity in mind and uses built-in JavaScript features to work, which means its **tiny** and has **zero dependencies**.
 
 ## Installation
 
