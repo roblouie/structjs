@@ -14,7 +14,7 @@ Install the package:
 
 ## Usage
 
-For an example, let's write a program that reads in a bitmap image file. Using [information about the files format](http://www.ece.ualberta.ca/~elliott/ee552/studentAppNotes/2003_w/misc/bmp_file_format/bmp_file_format.htm) we know that the file header should look like this:
+As an example, let's write a program that reads in a bitmap image file. Using [information about the file format](http://www.ece.ualberta.ca/~elliott/ee552/studentAppNotes/2003_w/misc/bmp_file_format/bmp_file_format.htm) we know that the file header should look like this:
 
 ### Bitmap File Header
 
@@ -36,7 +36,7 @@ const bitmapHeaderStruct = new Struct(
   Struct.Uint32('bitmapDataStart')
 );
 ```
-Each property is defined with it's own type based on the file structure. We then call `getObject` on our struct to read data out of the array buffer into our object. We pass in an buffer to read from, the byte index to start from, and true for little endian.
+Each property is defined with it's own type based on the file structure. Now let's read a bitmap file into an `ArrayBuffer` and call `getObject` on our struct to read data out of the `ArrayBuffer` into our object. We pass in the `ArrayBuffer` to read from, the byte index in the file to start from, and true for little endian. In this case the byte offset is zero since we want to start from the beginning of the file.
 ```js
 const bitmapFileArrayBuffer = readBitmapImageFile();
 
@@ -77,7 +77,7 @@ For pixels, unlike the headers, we actually need an array of pixels instead of j
 ```js
 const pixels = pixelDataStruct.getObjects(bitmapFile, header.bitmapDataStart, numberOfPixels, true);
 ```
-And believe it or not, that's it! We just read in an entire bitmap image file exactly to spec. We can draw the image into a canvas now if we want to with just a little extra code.
+And believe it or not, that's it! We can now read in entire bitmap image files exactly to spec. We can draw the image into a canvas now if we want to with just a little extra code.
 
 ```js
 const imageData = new ImageData(infoHeader.imageWidth, infoHeader.imageHeight);
