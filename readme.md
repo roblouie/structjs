@@ -21,7 +21,7 @@ Install the package:
 
 As an example, let's write a program that reads in a bitmap image file. Using [information about the file format](http://www.ece.ualberta.ca/~elliott/ee552/studentAppNotes/2003_w/misc/bmp_file_format/bmp_file_format.htm) we know that the file header should look like this:
 
-### Bitmap File Header
+#### Bitmap File Header
 
 | Size | Description |
 |---------|----------|
