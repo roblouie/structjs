@@ -19,7 +19,7 @@ Install the package:
 
 ## Usage
 
-As an example, let's write a program that reads in a bitmap image file. Using [information about the file format](http://www.ece.ualberta.ca/~elliott/ee552/studentAppNotes/2003_w/misc/bmp_file_format/bmp_file_format.htm) we know that the file header should look like this:
+As an example, let's write a program that reads in a bitmap image file, displays information about it, then modifies the image. Using [information about the file format](http://www.ece.ualberta.ca/~elliott/ee552/studentAppNotes/2003_w/misc/bmp_file_format/bmp_file_format.htm) we know that the file header should look like this:
 
 #### Bitmap File Header
 
@@ -78,7 +78,7 @@ const numberOfPixels = infoHeader.imageWidth * infoHeader.imageHeight;
 ```
 After defining our structs, we generate the info header object as before, but now we want to start after the header, so we give a starting point of the byte length of the header. We also calculate how many pixels total are in the image by multiplying the width and height.
 
-For pixels, unlike the headers, we actually need an array of pixels instead of just one. So we call `createArray` on our struct to get an array of objects built from our struct, starting at the beginning of the bitmap data, and reading number of pixels times, in little endian format. The result will be an array the size of umberOfPixels, where each element of the array is an object defined by our struct.
+For pixels, unlike the headers, we actually need an array of pixels instead of just one. So we call `createArray` on our struct to get an array of objects built from our struct, starting at the beginning of the bitmap data, and reading number of pixels times, in little endian format. The result will be an array the size of numberOfPixels, where each element of the array is an object defined by our struct.
 ```js
 const pixels = pixelDataStruct.createArray(bitmapFile, header.bitmapDataStart, numberOfPixels, true);
 ```
