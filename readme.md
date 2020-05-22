@@ -107,7 +107,7 @@ pixels.forEach((pixel, index) => {
   }
 });
 ```
-This doesn't just modify your pixel objects, each pixel is tied directly to your binary data. Changing a property of the pixel object actually changes the data in the array buffer. If you download the original ArrayBuffer every other pixel will be blue. You can try this out [here](https://roblouie.com/structjs/bitmap-example/), or view the full code [here](https://github.com/roblouie/structjs/front-end/open-bitmap.js).
+This doesn't just modify your pixel objects, each pixel is tied directly to your binary data. Changing a property of the pixel object actually changes the data in the array buffer. If you download the original ArrayBuffer every other pixel will be blue. You can try this out [here](https://roblouie.com/structjs/bitmap-example/), or view the full code [here](https://github.com/roblouie/structjs/blob/master/examples/front-end/open-bitmap.js).
 
 ### Usage in Node
 
@@ -140,7 +140,7 @@ fs.readFile(path.join(__dirname, 'cartest.bmp'), (err, data) => {
   fs.writeFile(path.join(__dirname, 'blue-pixels.bmp'), data, () => console.log('File written'));
 });
 ```
-I've omitted redefining the Structs here, see the front-end section for that, or the full example code [here](https://github.com/roblouie/structjs/examples/node/open-bitmap.js).
+I've omitted redefining the Structs here, see the front-end section for that, or the full example code [here](https://github.com/roblouie/structjs/blob/master/examples/node/open-bitmap.js).
 
 ## How it Works
 
