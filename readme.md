@@ -6,6 +6,11 @@ Struct makes it easy to both read and modify ANY file of ANY type, provided you 
 
 StructJS provides a C style struct interface making reading and editing binary files simple and more self-documenting. StructJS is built with simplicity in mind, is **tiny**, and has **zero dependencies**.
 
+* [Installation](#installation)
+* [Usage](#usage)
+* [How it Works](#how-it-works)
+* [API](#api)
+
 ## Installation
 
 Install the package:
@@ -137,10 +142,27 @@ fs.readFile(path.join(__dirname, 'cartest.bmp'), (err, data) => {
 ```
 I've omitted redefining the Structs here, see the front-end section for that, or the full example code [here](https://github.com/roblouie/structjs/examples/node/open-bitmap.js).
 
+## How it Works
+
+StructJS is a helper class for JavaScript's built in [DataView](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView). DataView uses an `ArrayBuffer` as its storage backing and allows getting and setting of various types. While this works, each getter and setter requires its own offset and its own boolean for endianess:
+
+```
+new DataView(arrayBuffer).setInt16(0, 256, true);
+```
+
+StructJS uses DataView, but also tracks endianess for the entire struct, lets you name the entries, stores their type and size, and keeps track each of their offsets for you. It then creates getters and setters for each property defined at instantiation. Those getters and setters in turn use the struct endianess, property offset, and property type to call the correct get or set on the DataView. 
+
+In the first example when we do `bitmapHeader.fileSize` this runs `get fileSize()` on the `bitmapHeader` object. The getter checks that the type of `fileSize` is `'Uint32'`, and calls 
+
+`this.dataView.getUint32(this.offsetTo.fileSize, this.isLittleEndian)` 
+
+You can in fact replace `bitmapHeader.fileSize` with `bitmapHeader.dataView.getUint32(bitmapHeader.offsetTo.fileSize, bitmapHeader.isLittleEndian)` and the code will continue to function. Writing `bitmap.fileSize` is just much nicer.
+
 ## API
 
-- [Static](#static)
+- [Constructor](#constructor)
   - [Struct(propertyInfo1, ...propertyInfoN)](https://github.com/roblouie/structjs#structpropertyinfo1-propertyinfon)
+- [Type Definitions](#type-definitions)
   - [Struct.Int8(propertyName)](https://github.com/roblouie/structjs#structint8propertyname)
   - [Struct.Uint8(propertyName)](https://github.com/roblouie/structjs#structuint8propertyname)
   - [Struct.Int16(propertyName)](https://github.com/roblouie/structjs#structint16propertyname)
@@ -151,10 +173,11 @@ I've omitted redefining the Structs here, see the front-end section for that, or
   - [Struct.BigUint64(propertyName)](https://github.com/roblouie/structjs#structbiguint64propertyname)
   - [Struct.Float32(propertyName)](https://github.com/roblouie/structjs#structfloat32propertyname)
   - [Struct.Float64(propertyName)](https://github.com/roblouie/structjs#structfloat64propertyname)
+- [Instance Methods](#instance-methods)
+  - [createObject(arrayBuffer, startOffset, isLittleEndian)](#createobjectarraybuffer-startoffset-islittleendian)
+  - [createArray(arrayBuffer, startOffset, numberOfObjects, isLittleEndian)](#createarrayarraybuffer-startoffset-numberofobjects-islittleendian)
 
-### Static
-
----
+## Constructor
 
 ### Struct(propertyInfo1, ...propertyInfoN)
 Creates a new Struct.
@@ -167,11 +190,12 @@ A Struct instance based on the definitions provided.
 
 ---
 
+## Type Definitions
+
 ### Struct.Int8(propertyName)
 Defines 8-bit signed integer.
 ####  Parameters
 `propertyName`
-
 What you want the property to be named in the resulting object.
 #### Returns
 A property info object with the format `{ propertyName, propertyType: 'Int8', byteLength: 1 }` used by the `Struct` constructor.
@@ -182,7 +206,6 @@ A property info object with the format `{ propertyName, propertyType: 'Int8', by
 Defines 8-bit unsigned integer.
 ####  Parameters
 `propertyName`
-
 What you want the property to be named in the resulting object.
 #### Returns
 A property info object with the format `{ propertyName, propertyType: 'Uint8', byteLength: 1 }` used by the `Struct` constructor.
@@ -193,7 +216,6 @@ A property info object with the format `{ propertyName, propertyType: 'Uint8', b
 Defines 16-bit signed integer.
 ####  Parameters
 `propertyName`
-
 What you want the property to be named in the resulting object.
 #### Returns
 A property info object with the format `{ propertyName, propertyType: 'Int16', byteLength: 2 }` used by the `Struct` constructor.
@@ -204,7 +226,6 @@ A property info object with the format `{ propertyName, propertyType: 'Int16', b
 Defines 16-bit unsigned integer.
 ####  Parameters
 `propertyName`
-
 What you want the property to be named in the resulting object.
 #### Returns
 A property info object with the format `{ propertyName, propertyType: 'Uint16', byteLength: 2 }` used by the `Struct` constructor.
@@ -215,7 +236,6 @@ A property info object with the format `{ propertyName, propertyType: 'Uint16', 
 Defines 32-bit signed integer.
 ####  Parameters
 `propertyName`
-
 What you want the property to be named in the resulting object.
 #### Returns
 A property info object with the format `{ propertyName, propertyType: 'Int32', byteLength: 4 }` used by the `Struct` constructor.
@@ -226,7 +246,6 @@ A property info object with the format `{ propertyName, propertyType: 'Int32', b
 Defines 32-bit unsigned integer.
 ####  Parameters
 `propertyName`
-
 What you want the property to be named in the resulting object.
 #### Returns
 A property info object with the format `{ propertyName, propertyType: 'Uint32', byteLength: 4 }` used by the `Struct` constructor.
@@ -237,7 +256,6 @@ A property info object with the format `{ propertyName, propertyType: 'Uint32', 
 Defines 64-bit signed big int.
 ####  Parameters
 `propertyName`
-
 What you want the property to be named in the resulting object.
 #### Returns
 A property info object with the format `{ propertyName, propertyType: 'BigInt64', byteLength: 8 }` used by the `Struct` constructor.
@@ -248,7 +266,6 @@ A property info object with the format `{ propertyName, propertyType: 'BigInt64'
 Defines 64-bit unsigned big int.
 ####  Parameters
 `propertyName`
-
 What you want the property to be named in the resulting object.
 #### Returns
 A property info object with the format `{ propertyName, propertyType: 'BigUint64', byteLength: 8 }` used by the `Struct` constructor.
@@ -259,7 +276,6 @@ A property info object with the format `{ propertyName, propertyType: 'BigUint64
 Defines 32-bit floating point number.
 ####  Parameters
 `propertyName`
-
 What you want the property to be named in the resulting object.
 #### Returns
 A property info object with the format `{ propertyName, propertyType: 'Float32', byteLength: 4 }` used by the `Struct` constructor.
@@ -270,7 +286,42 @@ A property info object with the format `{ propertyName, propertyType: 'Float32',
 Defines 64-bit floating point number.
 ####  Parameters
 `propertyName`
-
 What you want the property to be named in the resulting object.
 #### Returns
 A property info object with the format `{ propertyName, propertyType: 'Float64', byteLength: 8 }` used by the `Struct` constructor.
+
+---
+
+## Instance Methods
+
+### createObject(arrayBuffer, startOffset, isLittleEndian)
+Creates an object from an ArrayBuffer as defined by your struct.
+#### Parameters
+`arrayBuffer`
+ArrayBuffer to create the object from.
+
+`startOffset`
+Position in the ArrayBuffer to start from.
+
+`isLittleEndian`
+Pass true to use little endian format. Defaults to big endian.
+
+#### Returns
+Object with properties defined in struct, as well as the backing Dataview, a collection of offsets to those properties in the DataView, and the total byte length of the object.
+
+---
+
+### createArray(arrayBuffer, startOffset, numberOfObjects, isLittleEndian)
+Creates an array of objects from an ArrayBuffer as defined by your struct.
+#### Parameters
+`arrayBuffer`
+ArrayBuffer to create the object from.
+
+`startOffset`
+Position in the ArrayBuffer to start from.
+
+`isLittleEndian`
+Pass true to use little endian format. Defaults to big endian.
+
+#### Returns
+Array of objects with properties defined in struct, as well as the backing Dataview, a collection of offsets to those properties in the DataView, and the total byte length of the object.
