@@ -119,7 +119,7 @@ export default class Struct {
       runningOffset += property.byteLength;
     });
 
-    createdObject.byteLength = runningOffset;
+    createdObject.byteLength = runningOffset - startOffset;
 
     return createdObject;
   }

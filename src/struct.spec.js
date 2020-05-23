@@ -1,4 +1,4 @@
-import Struct from "../index";
+import Struct from "./struct";
 
 let dataView;
 
@@ -329,5 +329,10 @@ describe('Create an array of objects', () => {
     expect(myValues[1].secondValue).toBe(20);
     expect(dataView.getUint8(0)).toBe(10);
     expect(dataView.getUint16(8)).toBe(20);
+  });
+
+  test('Each element of the array has the same byte length', () => {
+    const myValues = repeatingObjectStruct.createArray(arrayBuffer, 0, 2);
+    expect(myValues[0].byteLength).toEqual(myValues[1].byteLength);
   });
 });

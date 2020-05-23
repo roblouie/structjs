@@ -169,7 +169,7 @@ var Struct = /*#__PURE__*/function () {
 
         runningOffset += property.byteLength;
       });
-      createdObject.byteLength = runningOffset;
+      createdObject.byteLength = runningOffset - startOffset;
       return createdObject;
     }
   }], [{
