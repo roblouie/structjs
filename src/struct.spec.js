@@ -1,4 +1,4 @@
-import Struct from "./struct";
+import { Struct } from "./struct";
 
 let dataView;
 
@@ -70,6 +70,7 @@ describe('16 bit integers', () => {
     const doubleBytes = sixteenBitStruct.getObject(arrayBuffer, 0, true);
     expect(doubleBytes.firstValue).toBe(-200);
     expect(doubleBytes.secondValue).toBe(200);
+    expect(doubleBytes.endPosition).toBe(3);
   });
 
   test('16 bit ints can be written', () => {

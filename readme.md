@@ -15,7 +15,7 @@ StructJS provides a C style struct interface making reading and editing binary f
 
 Install the package:
 
-`npm install @rlouie/structjs`
+`npm install @binary-files/structjs`
 
 ## Usage
 
@@ -32,7 +32,7 @@ As an example, let's write a program that reads in a bitmap image file, displays
 
 Lets define our struct based the header structure:
 ```js
-import Struct from '@rlouie/structjs'
+import { Struct } from '@binary-files/structjs';
 
 const bitmapHeaderStruct = new Struct(
   Struct.Uint16('signature'),
@@ -114,7 +114,7 @@ This doesn't just modify your pixel objects, each pixel is tied directly to your
 StructJS can be used in node just as on the front-end, just use require instead of import:
 
 ```js
-const Struct = require('@rlouie/structjs');
+const Struct = require('@binary-files/structjs');
 ```
 
 And use the `.buffer` property of the `Buffer` object returned by `fs.readfile`:

@@ -1,17 +1,18 @@
-interface PropertyInfo {
-    propertyName: string;
-    propertyType: string;
-    byteLength: number;
+declare interface PropertyInfo {
+  propertyName: string;
+  propertyType: string;
+  byteLength: number;
 }
-interface StructObject {
-    offsetTo: Object;
-    dataView: DataView;
-    isLittleEndian: boolean;
-    byteLength: number;
+declare interface StructData {
+  offsetTo: Object;
+  dataView: DataView;
+  isLittleEndian: boolean;
+  byteLength: number;
+  endPosition: number;
 }
 
 /** Class for creating structure definitions and generating objects and arrays with their defined structure from ArrayBuffers. */
-export default class Struct {
+declare class Struct {
   static Types: {
     Int8: string;
     Uint8: string;
@@ -47,17 +48,17 @@ export default class Struct {
    * @param {boolean} [isLittleEndian] - Pass true to use little endian format. Defaults to big endian.
    * @returns {Array} Array of objects with properties defined in struct, plus a byteLength property that defines the total byte lenght of the object.
    */
-  createArray(arrayBuffer: ArrayBuffer, startOffset: number, numberOfObjects: number, isLittleEndian?: boolean): StructObject[];
+  createArray<T extends StructData>(arrayBuffer: ArrayBuffer, startOffset: number, numberOfObjects: number, isLittleEndian?: boolean): T[];
 
   /**
    * Creates an object from an ArrayBuffer as defined by your struct.
    * @param {ArrayBuffer} arrayBuffer - Array buffer to create the object from.
    * @param {number} startOffset - Position in the ArrayBuffer to start from.
    * @param {boolean} [isLittleEndian] - Pass true to use little endian format. Defaults to big endian.
-   * @returns {StructObject} Object with properties defined in struct, plus a byteLength property that defines the total byte lenght of the object.
+   * @returns {StructData} Object with properties defined in struct, plus a byteLength property that defines the total byte lenght of the object.
    */
-  createObject(arrayBuffer: ArrayBuffer, startOffset: number, isLittleEndian?: boolean): StructObject;
-  
+  createObject<T extends StructData>(arrayBuffer: ArrayBuffer, startOffset: number, isLittleEndian?: boolean): T;
+
   /**
   * Defines an 8-bit integer. Used for struct definition.
   * @param {string} propertyName - Property name.
@@ -128,4 +129,5 @@ export default class Struct {
   */
   static Float64(propertyName: string): PropertyInfo;
 }
-export {};
+
+export { Struct, PropertyInfo, StructData }

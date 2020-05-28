@@ -1,4 +1,4 @@
-export default class Struct {
+export class Struct {
   static Types = {
     Int8: 'Int8',
     Uint8: 'Uint8',
@@ -120,6 +120,8 @@ export default class Struct {
     });
 
     createdObject.byteLength = runningOffset - startOffset;
+    createdObject.nextOffset = runningOffset;
+    createdObject.endPosition = runningOffset - 1;
 
     return createdObject;
   }
