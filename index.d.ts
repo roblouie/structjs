@@ -4,11 +4,12 @@ declare interface PropertyInfo {
   byteLength: number;
 }
 declare interface StructData {
-  offsetTo: Object;
+  offsetTo: any;
   dataView: DataView;
   isLittleEndian: boolean;
   byteLength: number;
   endPosition: number;
+  nextOffset: number;
 }
 
 /** Class for creating structure definitions and generating objects and arrays with their defined structure from ArrayBuffers. */
