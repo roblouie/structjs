@@ -279,6 +279,57 @@ describe('64 bit float', () => {
   });
 });
 
+describe('String', () => {
+  let arrayBuffer;
+  let stringStruct;
+
+  const textDecoder = new TextDecoder();
+  const textEncoder = new TextEncoder();
+
+  beforeEach(() => {
+    arrayBuffer = new ArrayBuffer(8);
+    const view = new Uint8Array(arrayBuffer);
+    const polyfillBuffer = textEncoder.encode('testmore');
+    for (let i = 0; i < polyfillBuffer.byteLength; i++) {
+      view[i] = polyfillBuffer[i];
+    }
+  });
+
+  beforeAll(() => {
+    stringStruct = new Struct(
+      Struct.ByteArray('firstString', 4),
+      Struct.ByteArray('secondString', 4),
+    );
+  });
+
+  test('strings can be read', () => {
+    const stringObject = stringStruct.createObject(arrayBuffer, 0, true);
+    debugger;
+    expect(stringObject.firstString).toEqual(textEncoder.encode('test'));
+    expect(stringObject.secondString).toEqual(textEncoder.encode('more'));
+  });
+
+  test('strings can be written', () => {
+    const stringObject = stringStruct.createObject(arrayBuffer, 0, true);
+    const newEncodedFirstString = textEncoder.encode('new ');
+    const newEncodedSecondString = textEncoder.encode('data');
+    stringObject.firstString = newEncodedFirstString
+    stringObject.secondString = newEncodedSecondString
+    expect(stringObject.firstString).toEqual(newEncodedFirstString);
+    expect(stringObject.secondString).toEqual(newEncodedSecondString);
+  });
+
+  test('incorrect type results in error', () => {
+    const stringObject = stringStruct.createObject(arrayBuffer, 0, true);
+    expect(() => { stringObject.firstString = 'setting directly as a string not allowed' }).toThrow();
+  });
+
+  test('setting too large of an array results in error', () => {
+    const stringObject = stringStruct.createObject(arrayBuffer, 0, true);
+    expect(() => { stringObject.firstString = textEncoder.encode('this string is longer than 4 bytes') }).toThrow();
+  });
+})
+
 
 describe('Create an array of objects', () => {
   let arrayBuffer;

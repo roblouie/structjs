@@ -165,6 +165,37 @@ var Struct = /*#__PURE__*/function () {
               }
             });
             break;
+
+          case Struct.Types.ByteArray:
+            Object.defineProperty(createdObject, property.propertyName, {
+              get: function get() {
+                var startOffset = createdObject.offsetTo[property.propertyName];
+                var endPosition = startOffset + property.byteLength;
+                var bytes = new Uint8Array(property.byteLength);
+
+                for (var i = startOffset, j = 0; i < endPosition; i++, j++) {
+                  bytes[j] = createdObject.dataView.getUint8(i, createdObject.isLittleEndian);
+                }
+
+                return bytes;
+              },
+              set: function set(value) {
+                if (!(value instanceof Uint8Array)) {
+                  throw new Error('Incorrect type. Byte Arrays may only be type Uint8Array');
+                }
+
+                if (value.length !== property.byteLength) {
+                  throw new Error("Incorrect Uint8Array length. ".concat(value, " has a length of ").concat(value.length, ", but ").concat(property.propertyName, " must have a length of ").concat(property.byteLength));
+                }
+
+                var startOffset = createdObject.offsetTo[property.propertyName];
+                var endPosition = startOffset + property.byteLength;
+
+                for (var i = startOffset, j = 0; i < endPosition; i++, j++) {
+                  createdObject.dataView.setUint8(i, value[j], createdObject.isLittleEndian);
+                }
+              }
+            });
         }
 
         runningOffset += property.byteLength;
@@ -264,6 +295,15 @@ var Struct = /*#__PURE__*/function () {
         byteLength: 8
       };
     }
+  }, {
+    key: "ByteArray",
+    value: function ByteArray(propertyName, length) {
+      return {
+        propertyName: propertyName,
+        propertyType: Struct.Types.ByteArray,
+        byteLength: length
+      };
+    }
   }]);
 
   return Struct;
@@ -281,5 +321,6 @@ _defineProperty(Struct, "Types", {
   BigInt64: 'BigInt64',
   BigUint64: 'BigUint64',
   Float32: 'Float32',
-  Float64: 'Float64'
+  Float64: 'Float64',
+  ByteArray: 'ByteArray'
 });

@@ -10,6 +10,7 @@ export class Struct {
     BigUint64: 'BigUint64',
     Float32: 'Float32',
     Float64: 'Float64',
+    ByteArray: 'ByteArray',
   }
 
   constructor(...propertyInfos) {
@@ -114,6 +115,38 @@ export class Struct {
             set: value => createdObject.dataView.setFloat64(createdObject.offsetTo[property.propertyName], value, createdObject.isLittleEndian),
           });
           break;
+
+          case Struct.Types.ByteArray:
+            Object.defineProperty(createdObject, property.propertyName, {
+              get: () => {
+                const startOffset = createdObject.offsetTo[property.propertyName];
+                const endPosition = startOffset + property.byteLength;
+                const bytes = new Uint8Array(property.byteLength);
+
+                for (let i = startOffset, j = 0; i < endPosition; i++, j++) {
+                  bytes[j] = createdObject.dataView.getUint8(i, createdObject.isLittleEndian);
+                }
+
+                return bytes;
+              },
+
+              set: value => {
+                if (!(value instanceof Uint8Array)) {
+                  throw new Error('Incorrect type. Byte Arrays may only be type Uint8Array');
+                }
+                
+                if (value.length !== property.byteLength) {
+                  throw new Error(`Incorrect Uint8Array length. ${value} has a length of ${value.length}, but ${property.propertyName} must have a length of ${property.byteLength}`);
+                }
+
+                const startOffset = createdObject.offsetTo[property.propertyName];
+                const endPosition = startOffset + property.byteLength;
+
+                for (let i = startOffset, j = 0; i < endPosition; i++, j++) {
+                  createdObject.dataView.setUint8(i, value[j], createdObject.isLittleEndian);
+                }
+              }
+            })
       }
 
       runningOffset += property.byteLength;
@@ -203,6 +236,14 @@ export class Struct {
       propertyName,
       propertyType: Struct.Types.Float64,
       byteLength: 8,
+    }
+  }
+
+  static ByteArray(propertyName, length) {
+    return {
+      propertyName,
+      propertyType: Struct.Types.ByteArray,
+      byteLength: length,
     }
   }
 }

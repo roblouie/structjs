@@ -25,6 +25,7 @@ declare class Struct {
     BigUint64: string;
     Float32: string;
     Float64: string;
+    ByteArray: string;
   };
   properties: PropertyInfo[];
   byteLength: number;
@@ -129,6 +130,14 @@ declare class Struct {
   * @returns {Object} Property info object containing the property name, type and length in bytes.
   */
   static Float64(propertyName: string): PropertyInfo;
+
+  /**
+  * Defines a variable length array of bytes as a Uint8Array. Used for struct definition.
+  * @param {string} propertyName - Property name.
+  * @param {number} 
+  * @returns {Object} Property info object containing the property name, type and length in bytes.
+  */
+ static ByteArray(propertyName: string, length: number): PropertyInfo;
 }
 
 export { Struct, PropertyInfo, StructData }
