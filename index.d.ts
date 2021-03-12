@@ -26,6 +26,7 @@ declare class Struct {
     Float32: string;
     Float64: string;
     ByteArray: string;
+    Skip: string;
   };
   properties: PropertyInfo[];
   byteLength: number;
@@ -134,10 +135,17 @@ declare class Struct {
   /**
   * Defines a variable length array of bytes as a Uint8Array. Used for struct definition.
   * @param {string} propertyName - Property name.
-  * @param {number} 
+  * @param {number} length - Number of bytes in array
   * @returns {Object} Property info object containing the property name, type and length in bytes.
   */
- static ByteArray(propertyName: string, length: number): PropertyInfo;
+  static ByteArray(propertyName: string, length: number): PropertyInfo;
+
+  /**
+  * Skips the given number of bytes
+  * @param {number} length - Number of bytes to skip
+  * @returns {Object} Property info object containing length in bytes.
+  */
+  static Skip(length: number): PropertyInfo;
 }
 
 export { Struct, PropertyInfo, StructData }

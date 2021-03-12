@@ -11,6 +11,7 @@ export class Struct {
     Float32: 'Float32',
     Float64: 'Float64',
     ByteArray: 'ByteArray',
+    Skip: 'Skip'
   }
 
   constructor(...propertyInfos) {
@@ -134,7 +135,7 @@ export class Struct {
                 if (!(value instanceof Uint8Array)) {
                   throw new Error('Incorrect type. Byte Arrays may only be type Uint8Array');
                 }
-                
+
                 if (value.length !== property.byteLength) {
                   throw new Error(`Incorrect Uint8Array length. ${value} has a length of ${value.length}, but ${property.propertyName} must have a length of ${property.byteLength}`);
                 }
@@ -146,7 +147,7 @@ export class Struct {
                   createdObject.dataView.setUint8(i, value[j], createdObject.isLittleEndian);
                 }
               }
-            })
+            });
       }
 
       runningOffset += property.byteLength;
@@ -244,6 +245,13 @@ export class Struct {
       propertyName,
       propertyType: Struct.Types.ByteArray,
       byteLength: length,
+    }
+  }
+
+  static Skip(byteLength) {
+    return {
+      propertyType: Struct.Types.Skip,
+      byteLength
     }
   }
 }

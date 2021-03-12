@@ -388,3 +388,44 @@ describe('Create an array of objects', () => {
     expect(myValues[0].byteLength).toEqual(myValues[1].byteLength);
   });
 });
+
+describe('Skip', () => {
+  let arrayBuffer;
+  let skipStruct;
+
+  beforeEach(() => {
+    arrayBuffer = new ArrayBuffer(9);
+    dataView = new DataView(arrayBuffer);
+    dataView.setUint8(0, 100, true);
+    dataView.setUint8(1, 101, true);
+    dataView.setUint8(4, 104, true);
+    dataView.setUint8(8, 107, true)
+  });
+
+  beforeAll(() => {
+    skipStruct = new Struct(
+      Struct.Uint8('firstValue'),
+      Struct.Uint8('secondValue'),
+      Struct.Skip(2),
+      Struct.Uint8('thirdValue'),
+      Struct.Skip(3),
+      Struct.Uint8('fourthValue')
+    );
+  })
+  
+  test('skip can skip over a variable number of bytes', () => {
+    const singleBytes = skipStruct.getObject(arrayBuffer, 0, true);
+    expect(singleBytes.firstValue).toBe(100);
+    expect(singleBytes.secondValue).toBe(101);
+    expect(singleBytes.thirdValue).toBe(104);
+    expect(singleBytes.fourthValue).toBe(107);
+    expect(singleBytes).toHaveProperty('firstValue');
+    expect(singleBytes).toHaveProperty('secondValue');
+    expect(singleBytes).toHaveProperty('thirdValue');
+    expect(singleBytes).toHaveProperty('fourthValue');
+    expect(singleBytes.offsetTo.firstValue).toBe(0);
+    expect(singleBytes.offsetTo.secondValue).toBe(1);
+    expect(singleBytes.offsetTo.thirdValue).toBe(4);
+    expect(singleBytes.offsetTo.fourthValue).toBe(8);
+  });
+});

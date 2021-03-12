@@ -304,6 +304,14 @@ var Struct = /*#__PURE__*/function () {
         byteLength: length
       };
     }
+  }, {
+    key: "Skip",
+    value: function Skip(byteLength) {
+      return {
+        propertyType: Struct.Types.Skip,
+        byteLength: byteLength
+      };
+    }
   }]);
 
   return Struct;
@@ -322,5 +330,6 @@ _defineProperty(Struct, "Types", {
   BigUint64: 'BigUint64',
   Float32: 'Float32',
   Float64: 'Float64',
-  ByteArray: 'ByteArray'
+  ByteArray: 'ByteArray',
+  Skip: 'Skip'
 });
