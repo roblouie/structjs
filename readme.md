@@ -37,7 +37,7 @@ import { Struct } from '@binary-files/structjs';
 const bitmapHeaderStruct = new Struct(
   Struct.Uint16('signature'),
   Struct.Uint32('fileSize'),
-  Struct.Uint32('unused'),
+  Struct.Skip(4), // Skip 4 bytes for unused section
   Struct.Uint32('bitmapDataStart')
 );
 ```
