@@ -109,6 +109,27 @@ pixels.forEach((pixel, index) => {
 ```
 This doesn't just modify your pixel objects, each pixel is tied directly to your binary data. Changing a property of the pixel object actually changes the data in the array buffer. If you download the original ArrayBuffer every other pixel will be blue. You can try this out [here](https://roblouie.com/structjs/bitmap-example/), or view the full code [here](https://github.com/roblouie/structjs/blob/master/examples/front-end/open-bitmap.js).
 
+### TypeScript Support
+StructJS includes TypeScript support. To get type checking and IDE auto-complete on your created structs, define an interface for each struct and extend StructData. Then simply use the interface when creating an object, or an array of the interface when creating an array
+```js
+interface BitmapHeader extends StructData {
+  signature: number;
+  fileSize: number;
+  offsetToStartOfBitmapData: number;
+}
+
+// Info header omitted for brevity
+
+interface BitmapPixel extends StructData {
+  red: number;
+  green: number;
+  blue: number;
+}
+
+const bitmapHeader = bitmapHeaderStruct<BitmapHeader>.createObject(bitmapFileArrayBuffer, 0, true);
+const pixels = pixelDataStruct.createArray<BitmapPixel>(bitmapFile, header.bitmapDataStart, numberOfPixels, true);
+```
+
 ### Usage in Node
 
 StructJS can be used in node just as on the front-end, just use require instead of import:
