@@ -23,7 +23,7 @@ function parseBitmap(file) {
   const headerStruct = new Struct(
     Struct.Uint16('signature'),
     Struct.Uint32('fileSize'),
-    Struct.Uint32('unused'),
+    Struct.Skip(4),
     Struct.Uint32('offsetToStartOfBitmapData')
   );
 
@@ -47,9 +47,9 @@ function parseBitmap(file) {
     Struct.Uint8('red')
   );
 
-  const header = headerStruct.getObject(bitmapFileArrayBuffer , 0, true);
-  const infoHeader = infoHeaderStruct.getObject(bitmapFileArrayBuffer , header.byteLength, true);
-  pixels = pixelDataStruct.getObjects(bitmapFileArrayBuffer , header.offsetToStartOfBitmapData, infoHeader.imageWidth * infoHeader.imageHeight, true);
+  const header = headerStruct.createObject(bitmapFileArrayBuffer , 0, true);
+  const infoHeader = infoHeaderStruct.createObject(bitmapFileArrayBuffer , header.byteLength, true);
+  pixels = pixelDataStruct.createArray(bitmapFileArrayBuffer , header.offsetToStartOfBitmapData, infoHeader.imageWidth * infoHeader.imageHeight, true);
 
   updateUI(infoHeader);
 }
