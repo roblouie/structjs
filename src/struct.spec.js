@@ -319,6 +319,18 @@ describe('String', () => {
     expect(stringObject.secondString).toEqual(newEncodedSecondString);
   });
 
+  test('byte arrays can be updated', () => {
+    const stringObject = stringStruct.createObject(arrayBuffer, 4, true);
+    stringObject.firstString[0] = 1;
+    stringObject.firstString[1] = 1;
+    stringObject.firstString[2] = 1;
+    stringObject.firstString[3] = 1;
+
+    expect(stringObject.firstString[1]).toEqual(1);
+    expect(stringObject.firstString[2]).toEqual(1);
+    expect(stringObject.firstString[3]).toEqual(1);
+  });
+
   test('incorrect type results in error', () => {
     const stringObject = stringStruct.createObject(arrayBuffer, 0, true);
     expect(() => { stringObject.firstString = 'setting directly as a string not allowed' }).toThrow();

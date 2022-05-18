@@ -121,14 +121,7 @@ export class Struct {
             Object.defineProperty(createdObject, property.propertyName, {
               get: () => {
                 const startOffset = createdObject.offsetTo[property.propertyName];
-                const endPosition = startOffset + property.byteLength;
-                const bytes = new Uint8Array(property.byteLength);
-
-                for (let i = startOffset, j = 0; i < endPosition; i++, j++) {
-                  bytes[j] = createdObject.dataView.getUint8(i, createdObject.isLittleEndian);
-                }
-
-                return bytes;
+                return new Uint8Array(createdObject.dataView.buffer, startOffset, property.byteLength);
               },
 
               set: value => {
@@ -143,8 +136,9 @@ export class Struct {
                 const startOffset = createdObject.offsetTo[property.propertyName];
                 const endPosition = startOffset + property.byteLength;
 
+
                 for (let i = startOffset, j = 0; i < endPosition; i++, j++) {
-                  createdObject.dataView.setUint8(i, value[j], createdObject.isLittleEndian);
+                  createdObject.dataView.setUint8(i, value[j]);
                 }
               }
             });
